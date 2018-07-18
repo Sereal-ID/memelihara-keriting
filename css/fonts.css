@@ -1,0 +1,14 @@
+@font-face {
+    font-family: ProximaBlack;
+    src: url("../fonts/Proxima Nova Alt Black.otf");
+}
+
+@font-face {
+    font-family: ProximaSemiBold;
+    src: url("../fonts/Proxima Nova Alt Semibold.otf");
+}
+
+@font-face {
+    font-family: RuffDraftRegular;
+    src: url("../fonts/RuffDraft-Regular.otf");
+}

@@ -1,0 +1,213 @@
+@import url("fonts.css");
+
+html, body {
+    height: 100%;
+
+    overflow-x: hidden;
+}
+
+nav {
+    z-index: 3 !important;
+}
+
+body {
+    margin: 0;
+}
+
+#personCanvas {
+    z-index: 1
+}
+
+#monsterCanvas {
+    z-index: 2;
+}
+
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.transition {
+    display: block;
+    visibility: hidden;
+    position: absolute;
+    top: -50%;
+    left: -15%;
+    height: 150%;
+    width: 150%;
+
+    z-index: 99;
+    overflow-y: hidden;
+}
+
+.navbar-keriting {
+    color: #ffffff;
+    font-family: ProximaBlack;
+    text-transform: uppercase;
+}
+
+.navbar-keriting a {
+    color: #ffffff;
+}
+
+.navbar-keriting #navigationContent a:hover,
+.navbar-keriting #navigationContent a:focus {
+    border-bottom: 3px solid #ffffff;
+}
+
+.navbar-keriting .nav-link {
+    margin-left: 16px;
+    margin-right: 16px;
+    padding-bottom: .2rem;
+    padding-top: .2rem;
+}
+
+.article-keriting {
+    margin-bottom: 40px;
+}
+
+.to-article {
+    color: #A03D6B;
+}
+
+.placeholder {
+    background: #ffffff;
+    width: 100%;
+    padding-top: 100%;
+    border-radius: 15%;
+}
+
+.to-article:hover,
+.to-article:focus {
+    color: #ffffff !important;
+    text-decoration: none;
+}
+
+.article-keriting .desc {
+    margin-top: 16px;
+    font-family: ProximaBlack;
+    font-size: 1.4em;
+    text-transform: uppercase;
+}
+
+main {
+    background-color: #E800B0;
+    padding-top: 160px;
+    min-height: 100vh;
+}
+
+.footer-sereal {
+    background: #E800B0;
+    color: #ffffff;
+}
+
+.content-title {
+    border-top: 5px solid #A03D6B;
+    border-bottom: 5px solid #A03D6B;
+    padding-top: 28px;
+    padding-bottom: 28px;
+}
+
+.content-title h1 {
+    font-family: ProximaBlack;
+    font-size: 4em;
+    text-transform: uppercase;
+    color: #A03D6B;
+}
+
+.content-par {
+    margin-top: 48px;
+    font-family: ProximaSemiBold;
+    color: #ffffff;
+}
+
+.content-par .img-keriting {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.button-container {
+    position: absolute;
+    left: 50%;
+}
+
+.button-start-game {
+    position: relative;
+    z-index: 3;
+    width: 50%;
+    height: auto;
+    left: -25%;
+    cursor: pointer;
+}
+
+.score {
+    position: absolute;
+    right: 10%;
+    bottom: 0;
+    color: white;
+    font-size: 2em;
+    font-family: ProximaBlack;
+}
+
+/* The Modal (background) */
+.game-over-dialog {
+    font-family: RuffDraftRegular, sans-serif;
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 4; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+}
+
+/* Modal Content/Box */
+.dialog-content {
+    margin: 5% auto; /* 15% from the top and centered */
+    padding: 20px;
+    width: 50%; /* Could be more or less, depending on screen size */
+    background-image: url("../img/popup_kalah_kosong.png");
+    background-size: cover;
+}
+
+.real-content {
+    position: relative;
+    text-align: center;
+    margin-top: 12%;
+    font-size: 30px;
+}
+
+.real-content h2 {
+    font-size: 2.5em;
+}
+
+.real-content p {
+    margin-top: 20px;
+    margin-right: 50px;
+    line-height: 24px;
+}
+
+.real-footer {
+    margin-top: 70px;
+    width: 100%;
+    clear: both;
+}
+
+.real-footer a {
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.real-footer a:hover,
+.real-footer a:focus {
+    text-decoration: none;
+}
+
+.total-score {
+    position: absolute;
+    font-size: 4em;
+    color: #ffffff;
+    right: 0;
+}
