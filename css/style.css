@@ -15,15 +15,15 @@ body {
 }
 
 #personCanvas {
-    z-index: 1
+    position: absolute;
+    z-index: 1;
+    top: 70%;
+    left: 0;
 }
 
 #monsterCanvas {
-    z-index: 2;
-}
-
-canvas {
     position: absolute;
+    z-index: 2;
     top: 0;
     left: 0;
 }
@@ -45,6 +45,10 @@ canvas {
     color: #ffffff;
     font-family: ProximaBlack;
     text-transform: uppercase;
+}
+
+.navbar-colored {
+    background-color: #E800B0;
 }
 
 .navbar-keriting a {
@@ -135,9 +139,9 @@ main {
 .button-start-game {
     position: relative;
     z-index: 3;
-    width: 50%;
+    width: 75%;
     height: auto;
-    left: -25%;
+    left: -35%;
     cursor: pointer;
 }
 
@@ -210,4 +214,42 @@ main {
     font-size: 4em;
     color: #ffffff;
     right: 0;
+}
+
+/* Preloader */
+body.preloader-site {
+    overflow: hidden;
+}
+
+.preloader-wrapper {
+    height: 100%;
+    width: 100%;
+    background: #E800B0;
+    position: fixed;
+    text-align: center;
+    top: 0;
+    left: 0;
+    z-index: 99;
+}
+
+#preloaderCanvas {
+    height: 100%;
+    width: 100%;
+}
+
+.hidden-y-overflow {
+    overflow-y: hidden;
+}
+
+.footer-sereal.absolute {
+    position: absolute;
+    bottom: 0;
+}
+
+img.intro {
+	margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+	display: block;
 }

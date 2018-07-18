@@ -226,10 +226,10 @@ function Monster() {
 Monster.prototype = new Drawable()
 
 function MonsterSpawner() {
-    this.time = 700
+    this.time = 500
     this.monsterPool = new MonsterPool(20)
     var counter = 0
-    var maxCounter = 300
+    var maxCounter = 200
 
     this.monsterPool.init()
 
@@ -343,11 +343,16 @@ function Game() {
 
     this.gameOver = function() {
         document.getElementById("myModal").style.display = 'block';
+
+        $("#personCanvas").animate({top: "70%"}, 1000)
+
         this.monsterCtx.clearRect(0, 0, this.monsterCanvas.width, this.monsterCanvas.height)
     }
 
     this.restart = function() {
         document.getElementById("myModal").style.display = 'none';
+        $("#personCanvas").animate({top: "0"}, 1000)
+
         this.personCtx.clearRect(0, 0, this.personCanvas.width, this.personCanvas.height)
 
         this.monsterSpawner = new MonsterSpawner()
@@ -442,47 +447,11 @@ function init() {
 
     if (game.init()) {
         let button = document.getElementsByClassName("button-start-game")[0]
+        
         button.addEventListener('click', function(event) {
             this.style.display = "none";
+            $("#personCanvas").animate({top: "0"}, 1000)
             game.start()
         })
     }
 }
-
-// var canvas = document.getElementById("canvas")
-// var ctx = canvas.getContext("2d")
-// canvas.width = innerWidth
-// canvas.height = innerHeight
-
-// var srcX = 0
-// var srcY = 0
-
-// var x = 0, y = 0
-
-// var canvasWidth = canvas.width
-// var canvasHeight = canvas.height
-
-// var monster = new Image()
-// monster.src = "images/pop-01.png"
-
-// var cols = 6
-
-// var sheetWidth = 1679
-// var sheetHeight = 278
-
-// var width = sheetWidth / cols
-
-// var curFrame = 0
-
-// function animate() {
-//     ctx.clearRect(0, 0, canvasWidth, canvasHeight)
-//     curFrame = (curFrame + 1) % cols
-//     srcX = curFrame * width
-//     srcY = 0
-
-//     ctx.drawImage(monster, srcX, srcY, width, sheetHeight, x, y, width, sheetHeight)
-// }
-
-// setInterval(function() {
-//     animate()
-// }, 80)
