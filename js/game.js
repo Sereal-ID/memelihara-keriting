@@ -21,9 +21,11 @@ var imageRepository = new function() {
     this.personInit = new Image()
     this.personInitSecond = new Image()
     this.personHit = new Image()
+    this.personBlink = new Image()
+    this.personHappy = new Image()
 
     // ensure all images are loaded
-    var numImages = 7
+    var numImages = 9
     var numLoaded = 0
 
     function imageLoaded() {
@@ -61,6 +63,14 @@ var imageRepository = new function() {
         imageLoaded()
     }
 
+    this.personBlink.onload = function() {
+        imageLoaded()
+    }
+
+    this.personHappy.onload = function() {
+        imageLoaded()
+    }
+
     // set images src
     this.monster.src = "img/monster1.png"
     this.monsterRed.src = "img/monster2.png"
@@ -69,6 +79,8 @@ var imageRepository = new function() {
     this.personInit.src = "img/cewe_normal.png"
     this.personInitSecond.src = "img/cewe_normal2.png"
     this.personHit.src = "img/cewe_kena2.png"
+    this.personBlink.src = "img/cewe_kedip.png"
+    this.personHappy.src = "img/cewe_senang.png"
 }
 
 /**
@@ -99,6 +111,7 @@ function Person() {
     var image_status = false
     this.image = imageRepository.personInit
     this.health = 1
+    this.isHappy = false
 
     this.initPosition = function(width, height) {
         this.init((this.canvasWidth - width) / 2, this.canvasHeight - height, width, height)
@@ -119,6 +132,9 @@ function Person() {
         } else {
             if (counter > max_counter) {
                 this.changeImageIdle()
+                if (this.isHappy) {
+                    this.isHappy = false
+                }
                 image_status = !image_status
                 counter = 0
             }
@@ -129,10 +145,18 @@ function Person() {
     }
 
     this.changeImageIdle = function() {
-        if (image_status) {
-            this.image = imageRepository.personInit
+        if (this.isHappy) {
+            this.image = imageRepository.personHappy
         } else {
-            this.image = imageRepository.personInitSecond
+            if (image_status) {
+                this.image = imageRepository.personInit
+            } else {
+                if (Math.random() > 0.7) {
+                    this.image = imageRepository.personBlink
+                } else {
+                    this.image = imageRepository.personInitSecond
+                }
+            }
         }
     }
 
@@ -436,6 +460,7 @@ function Game() {
                     if (monster.checkIfMouseInsideMonster(mousePos.x, mousePos.y) && monster.alive) {
                         monster.isClicked = true
                         game.explosionSpawner.doSpawn(monster.x, monster.y, monster.width, monster.height)
+                        game.person.isHappy = true
                     }
                 })
             })
