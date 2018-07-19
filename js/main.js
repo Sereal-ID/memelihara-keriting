@@ -63,7 +63,7 @@ Barba.Dispatcher.on('newPageReady', function(current, prev, container) {
 var gameView = Barba.BaseView.extend({
     namespace: 'game-container',
     onEnter: function() {
-        init()
+        window.init()
     }
 })
 

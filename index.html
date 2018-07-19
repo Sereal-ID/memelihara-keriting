@@ -12,7 +12,9 @@
 <body id="barba-wrapper">
     <div class="preloader-wrapper">
         <canvas id="preloaderCanvas"></canvas>
-        <img src="img/intro_tulisan.png" class="intro" />
+        <div class="intro">
+            <img src="img/intro_tulisan.png" />
+        </div>
     </div>
     <div class="full transition" id="transition"></div>
     <div class="barba-container" data-namespace="game-container">
@@ -40,12 +42,13 @@
             <div id="content" class="">
                 <canvas id="monsterCanvas"></canvas>
                 <canvas id="personCanvas"></canvas>
+                <canvas id="explosionCanvas"></canvas>
     
                 <div class="button-container">
                     <img src="img/tombol_mulai_sebelum.png" class="button-start-game" />
                 </div>
 
-                <div class="score">
+                <div class="score" id="scoreContainer">
                     SCORE: <span id="score"></span>
                 </div>
 
@@ -75,10 +78,9 @@
                                     </a>
                                 </div>
                             </div>
-                        </div>
-                
-                        <div class="total-score">
-                            <span id="totalScore">0</span>
+                            <div class="total-score">
+                                <span id="totalScore">0</span>
+                            </div>
                         </div>
                     </div>
                 </div>

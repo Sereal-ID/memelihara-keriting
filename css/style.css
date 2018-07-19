@@ -16,12 +16,19 @@ body {
 
 #personCanvas {
     position: absolute;
-    z-index: 1;
+    z-index: 0;
     top: 70%;
     left: 0;
 }
 
 #monsterCanvas {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+}
+
+#explosionCanvas {
     position: absolute;
     z-index: 2;
     top: 0;
@@ -134,14 +141,15 @@ main {
 .button-container {
     position: absolute;
     left: 50%;
+    top: 30%;
 }
 
 .button-start-game {
     position: relative;
     z-index: 3;
-    width: 75%;
+    width: 100%;
     height: auto;
-    left: -35%;
+    left: -50%;
     cursor: pointer;
 }
 
@@ -213,7 +221,13 @@ main {
     position: absolute;
     font-size: 4em;
     color: #ffffff;
-    right: 0;
+    right: 8%;
+    top: -30%;
+    text-align: center;
+}
+
+#totalScore {
+    text-align: center;
 }
 
 /* Preloader */
@@ -222,7 +236,7 @@ body.preloader-site {
 }
 
 .preloader-wrapper {
-    height: 100%;
+    min-height: 100%;
     width: 100%;
     background: #E800B0;
     position: fixed;
@@ -246,10 +260,18 @@ body.preloader-site {
     bottom: 0;
 }
 
-img.intro {
-	margin-left: auto;
-    margin-right: auto;
-    margin-top: auto;
-    margin-bottom: auto;
-	display: block;
+.intro {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    opacity: 0;
+}
+
+.intro img {
+    position: relative;
+    left: -50%;
+}
+
+#scoreContainer {
+    display: none;
 }

@@ -1,3 +1,14 @@
+window.requestAnimFrame = (function() {
+    return window.requestAnimationFrame    ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame    ||
+        window.oRequestAnimationFrame      ||
+        window.msRequestAnimationFrame     ||
+        function(callback, element) {
+            window.setTimeout(callback, 1000 / 60)
+        }
+})()
+
 /**
  * image repository to handle all the images used in the game
  */
@@ -177,6 +188,7 @@ function MonsterPool(maxSize) {
 
 function Monster() {
     this.alive = false
+    this.isClicked = false
 
     this.setImage = function(image) {
         this.image = image
@@ -195,7 +207,12 @@ function Monster() {
         this.context.clearRect(this.x, this.y, this.width, this.height)
         this.x += this.speedX
         this.y += this.speedY
+
         if (this.isColliding) {
+            return true
+        }
+
+        if (this.isClicked) {
             game.playerScore += 10
             return true
         }
@@ -219,6 +236,7 @@ function Monster() {
         this.speedY = 0
         this.alive = false
         this.isColliding = false
+        this.isClicked = false
     }
 }
 
@@ -264,25 +282,104 @@ function MonsterSpawner() {
 
 MonsterSpawner.prototype = new Drawable()
 
+function ExplosionPool(maxSize) {
+    var size = maxSize
+    this.pool = []
+
+    /**
+     * Populate with explosion
+     */
+    this.init = function() {
+        for (let i = 0; i < size; i++) {
+            let explosion = new Explosion()
+            explosion.init(0, 0, imageRepository.smokeSprite.width / 6, imageRepository.smokeSprite.height)
+            this.pool[i] = explosion
+        }
+    }
+
+    this.get = function(x, y) {
+        if (!this.pool[size - 1].alive) {
+            this.pool[size - 1].spawn(x, y)
+            this.pool.unshift(this.pool.pop())
+        }
+    }
+
+    this.animate = function() {
+        for (let i = 0; i < this.pool.length; i++) {
+            if (this.pool[i].alive) {
+                if (this.pool[i].draw()) {
+                    this.pool[i].clear()
+                    this.pool.push((this.pool.splice(i,1))[0])
+                }
+            } else {
+                break
+            }
+        }
+    }
+}
+
 function Explosion() {
     this.currentIndex = 0
     this.srcX = 0
     this.srcY = 0
     var maxIndex = 6
+    this.alive = false
+    this.counter = 0
+    var maxCounter = 5
+
+    this.spawn = function(x, y) {
+        this.x = x
+        this.y = y
+        this.alive = true
+    }
 
     this.draw = function() {
-        if (currentIndex < maxIndex && this.alive) {
-            this.context.clearRect(this.x, this.y, this.width, this.height)
+        this.context.clearRect(this.x, this.y, this.width, this.height)
+
+        if (this.currentIndex < maxIndex) {    
             this.context.drawImage(imageRepository.smokeSprite, this.srcX, this.srcY, this.width, this.height, this.x, this.y, this.width, this.height)
-            this.currentIndex++
-            this.srcX = currentIndex * this.width
-        } else {
-            this.alive = false
+            if (this.counter < maxCounter) {
+                this.counter++
+            } else {
+                this.counter = 0
+                this.currentIndex++
+                this.srcX = this.currentIndex * this.width
+            }
+
+            return false    
         }
+
+        return true
+    }
+
+    this.clear = function() {
+        this.x = 0
+        this.y = 0
+        this.alive = false
+        this.currentIndex = 0
+        this.srcX = 0
+        this.srcY = 0
     }
 }
 
 Explosion.prototype = new Drawable()
+
+function ExplosionSpawner() {
+    this.explosionPool = new ExplosionPool(20)
+
+    this.explosionPool.init()
+
+    this.doSpawn = function(x, y, width, height) {
+        let smokeWidth = imageRepository.smokeSprite.width / 6
+        let smokeHeight = imageRepository.smokeSprite.height
+
+        let trueX = x - (smokeWidth - width) / 2
+        let trueY = y - (smokeHeight - height) / 2
+        this.explosionPool.get(trueX, trueY)
+    }
+}
+
+ExplosionSpawner.prototype = new Drawable()
 
 /**
  * The Game class which will hold all objects and data for the game
@@ -293,14 +390,23 @@ function Game() {
     this.init = function() {
         this.monsterCanvas = document.getElementById("monsterCanvas")
         this.personCanvas = document.getElementById("personCanvas")
+        this.explosionCanvas = document.getElementById("explosionCanvas")
         // check if canvas is supported
         if (this.monsterCanvas.getContext) {
             this.monsterCtx = this.monsterCanvas.getContext('2d')
             this.personCtx = this.personCanvas.getContext('2d')
+            this.explosionCtx = this.explosionCanvas.getContext('2d')
             // initialize informations
             Monster.prototype.context = this.monsterCtx
             Monster.prototype.canvasWidth = this.monsterCanvas.width
             Monster.prototype.canvasHeight = this.monsterCanvas.height
+    
+            Explosion.prototype.context = this.explosionCtx
+            Explosion.prototype.canvasWidth = this.explosionCanvas.width
+            Explosion.prototype.canvasHeight = this.explosionCanvas.height
+
+            ExplosionSpawner.prototype.canvasWidth = this.explosionCanvas.width
+            ExplosionSpawner.prototype.canvasHeight = this.explosionCanvas.height
 
             MonsterSpawner.prototype.canvasWidth = this.monsterCanvas.width
             MonsterSpawner.prototype.canvasHeight = this.monsterCanvas.height
@@ -319,14 +425,17 @@ function Game() {
 
             this.playerScore = 0
 
+            this.explosionSpawner = new ExplosionSpawner()
+
             let game = this
 
-            this.monsterCanvas.addEventListener('click', function(event) {
+            this.explosionCanvas.addEventListener('click', function(event) {
                 let mousePos = getMousePos(this, event)
 
                 game.monsterSpawner.monsterPool.pool.forEach(monster => {
                     if (monster.checkIfMouseInsideMonster(mousePos.x, mousePos.y) && monster.alive) {
-                        monster.isColliding = true
+                        monster.isClicked = true
+                        game.explosionSpawner.doSpawn(monster.x, monster.y, monster.width, monster.height)
                     }
                 })
             })
@@ -343,7 +452,8 @@ function Game() {
 
     this.gameOver = function() {
         document.getElementById("myModal").style.display = 'block';
-
+        document.getElementById("scoreContainer").style.display = 'none';
+        document.getElementById("totalScore").innerHTML = document.getElementById('score').innerHTML
         $("#personCanvas").animate({top: "70%"}, 1000)
 
         this.monsterCtx.clearRect(0, 0, this.monsterCanvas.width, this.monsterCanvas.height)
@@ -351,6 +461,7 @@ function Game() {
 
     this.restart = function() {
         document.getElementById("myModal").style.display = 'none';
+        document.getElementById("scoreContainer").style.display = 'block';
         $("#personCanvas").animate({top: "0"}, 1000)
 
         this.personCtx.clearRect(0, 0, this.personCanvas.width, this.personCanvas.height)
@@ -389,9 +500,10 @@ function animate() {
     updateUI()
     
     if (game.person.health > 0) {
-        requestAnimFrame(animate)
+        requestAnimationFrame(animate)
         game.monsterSpawner.monsterPool.animate()
         game.monsterSpawner.doSpawn()
+        game.explosionSpawner.explosionPool.animate()
         game.person.draw()
     } else {
         game.gameOver()
@@ -419,17 +531,6 @@ function collisionCheck() {
     })
 }
 
-window.requestAnimFrame = (function() {
-    return window.requestAnimationFrame    ||
-        window.webkitRequestAnimationFrame ||
-        window.mozRequestAnimationFrame    ||
-        window.oRequestAnimationFrame      ||
-        window.msRequestAnimationFrame     ||
-        function(callback, element) {
-            window.setTimeout(callback, 1000 / 60)
-        }
-})()
-
 var game = new Game()
 
 function initCanvas() {
@@ -440,6 +541,10 @@ function initCanvas() {
     let charCanvas = document.getElementById("personCanvas")
     charCanvas.width = innerWidth
     charCanvas.height = innerHeight
+
+    let explosionCanvas = document.getElementById("explosionCanvas")
+    explosionCanvas.width = innerWidth
+    explosionCanvas.height = innerHeight
 }
 
 function init() {
@@ -451,6 +556,8 @@ function init() {
         button.addEventListener('click', function(event) {
             this.style.display = "none";
             $("#personCanvas").animate({top: "0"}, 1000)
+            document.getElementById("scoreContainer").style.display = 'block';
+
             game.start()
         })
     }

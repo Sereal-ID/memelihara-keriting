@@ -38,14 +38,25 @@ $(document).ready(function() {
 })
 
 window.addEventListener('load', function(e) {
-    clearInterval(myReq)
-    $('#preloaderCanvas').fadeOut()
 
     setInterval(function() {
-        $('.intro').fadeIn()
+        $('#preloaderCanvas').fadeOut()
+        clearInterval(myReq)
+
         setInterval(function() {
-            $('.preloader-wrapper').fadeOut()
-            $('body').removeClass('preloader-site')
-        }, 2000)
+            $('.intro').animate({opacity: '1'}, 800)
+            
+            setInterval(function() {
+                $('.intro').animate({opacity: '0'}, 1000)
+    
+                setInterval(function() {
+                    $('.preloader-wrapper').fadeOut()
+                    $('body').removeClass('preloader-site')
+                }, 2000)
+            }, 2000)
+        }, 800)
+
+
     }, 2000)
+
 })
