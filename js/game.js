@@ -580,7 +580,6 @@ function init() {
         
         button.addEventListener('click', function(event) {
             this.style.display = "none";
-            $("#personCanvas").animate({top: "0"}, 1000)
             document.getElementById("scoreContainer").style.display = 'block';
 
             game.start()

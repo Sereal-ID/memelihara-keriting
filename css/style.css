@@ -17,7 +17,7 @@ body {
 #personCanvas {
     position: absolute;
     z-index: 0;
-    top: 70%;
+    top: 0;
     left: 0;
 }
 
@@ -141,15 +141,15 @@ main {
 .button-container {
     position: absolute;
     left: 50%;
-    top: 30%;
+    top: 20%;
 }
 
 .button-start-game {
     position: relative;
     z-index: 3;
-    width: 100%;
+    width: 80%;
     height: auto;
-    left: -50%;
+    left: -40%;
     cursor: pointer;
 }
 
