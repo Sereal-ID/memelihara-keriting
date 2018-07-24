@@ -181,7 +181,8 @@ main {
     padding: 20px;
     width: 50%; /* Could be more or less, depending on screen size */
     background-image: url("../img/popup_kalah_kosong.png");
-    background-size: cover;
+    background-size: contain;
+    background-repeat: no-repeat;
 }
 
 .real-content {
@@ -274,4 +275,8 @@ body.preloader-site {
 
 #scoreContainer {
     display: none;
+}
+
+.sword-cursor {
+    cursor: url(../img/pointer1.png), auto;
 }
