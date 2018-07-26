@@ -12,6 +12,7 @@ window.requestAnimFrame = (function() {
 /**
  * image repository to handle all the images used in the game
  */
+
 var imageRepository = new function() {
     // define images
     this.monster = new Image()
@@ -31,6 +32,15 @@ var imageRepository = new function() {
     function imageLoaded() {
         numLoaded++
         if (numLoaded == numImages) {
+            var gameView = Barba.BaseView.extend({
+                namespace: 'game-container',
+                onEnter: function() {
+                    window.init()
+                }
+            })
+
+            gameView.init()
+            
             window.init()
         }
     }
@@ -268,10 +278,10 @@ function Monster() {
 Monster.prototype = new Drawable()
 
 function MonsterSpawner() {
-    this.time = 500
+    this.time = 200
     this.monsterPool = new MonsterPool(20)
     var counter = 0
-    var maxCounter = 200
+    var maxCounter = 50
 
     this.monsterPool.init()
 
@@ -291,16 +301,46 @@ function MonsterSpawner() {
     this.fire = function() {
         // the spawn positioning and speed relative to spawn points are determined here
         // Converge Point (x,y) must be initiated first
-        let randX = Math.floor(Math.random() * (this.canvasWidth*2 - imageRepository.monster.width)) - this.canvasWidth
-        let randY = -imageRepository.monster.height
-        if (randX < -imageRepository.monster.width || randX > this.canvasWidth) {
-            randY = Math.floor(Math.random() * (this.canvasHeight - imageRepository.monster.height*2))
+        let spawnCounter = Math.floor(Math.random() * 6)
+        let spawnPoint
+        if (spawnCounter % 3 == 0) {
+            spawnPoint = this.getRandomFirstAreaPosition()
+        } else if (spawnCounter % 3 == 1) {
+            spawnPoint = this.getRandomSecondAreaPosition()
+        } else {
+            spawnPoint = this.getRandomThirdAreaPosition()
         }
 
-        let speedX = (this.convergePointX - randX) / this.time
-        let speedY = (this.convergePointY - randY) / this.time
+        let speedX = (this.convergePointX - spawnPoint.x) / this.time
+        let speedY = (this.convergePointY - spawnPoint.y) / this.time
 
-        this.monsterPool.get(randX, randY, speedX, speedY)
+        this.monsterPool.get(spawnPoint.x, spawnPoint.y, speedX, speedY)
+    }
+
+    // Spawn area is divided into three areas:
+    // First area (x < 0, 0 < y < canvasHeight)
+    // Second area (0 < x < canvasWidth, y < 0)
+    // Third area (x > canvasWidth, 0 < y < canvasHeight)
+
+    this.getRandomFirstAreaPosition = function() {
+        return {
+            x: Math.floor(Math.random() * (imageRepository.monster.width/2)) - imageRepository.monster.width,
+            y: Math.floor(Math.random() * (this.canvasHeight - imageRepository.monster.height*2))
+        }
+    }
+
+    this.getRandomSecondAreaPosition = function() {
+        return {
+            x: Math.floor(Math.random() * (this.canvasWidth - imageRepository.monster.width)),
+            y: -imageRepository.monster.height
+        }
+    }
+
+    this.getRandomThirdAreaPosition = function() {
+        return {
+            x: Math.floor(Math.random() * imageRepository.monster.width) + this.canvasWidth,
+            y: Math.floor(Math.random() * (this.canvasHeight - imageRepository.monster.height*2))
+        }
     }
 }
 
@@ -349,7 +389,7 @@ function Explosion() {
     var maxIndex = 6
     this.alive = false
     this.counter = 0
-    var maxCounter = 5
+    var maxCounter = 4
 
     this.spawn = function(x, y) {
         this.x = x
@@ -557,6 +597,7 @@ function collisionCheck() {
 }
 
 var game = new Game()
+var isLoaded = false
 
 function initCanvas() {
     let canvas = document.getElementById("monsterCanvas")

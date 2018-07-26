@@ -57,16 +57,7 @@ Barba.Pjax.getTransition = function() {
 }
 
 Barba.Dispatcher.on('newPageReady', function(current, prev, container) {
-    history.scrollRestoration = 'manual';
-});
-
-var gameView = Barba.BaseView.extend({
-    namespace: 'game-container',
-    onEnter: function() {
-        window.init()
-    }
+    history.scrollRestoration = 'manual'
 })
-
-gameView.init()
 
 Barba.Pjax.start();

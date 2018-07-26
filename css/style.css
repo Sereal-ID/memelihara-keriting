@@ -7,7 +7,7 @@ html, body {
 }
 
 nav {
-    z-index: 3 !important;
+    z-index: 10 !important;
 }
 
 body {
@@ -113,6 +113,17 @@ main {
     color: #ffffff;
 }
 
+.footer-sereal .footer-logo {
+    width: 80px;
+    display: inline-block;
+    margin-top: -12px;
+}
+
+.footer-sereal.absolute {
+    position: absolute;
+    bottom: 0;
+}
+
 .content-title {
     border-top: 5px solid #A03D6B;
     border-bottom: 5px solid #A03D6B;
@@ -183,12 +194,15 @@ main {
     background-image: url("../img/popup_kalah_kosong.png");
     background-size: contain;
     background-repeat: no-repeat;
+    background-position: center;
 }
 
 .real-content {
     position: relative;
     text-align: center;
     margin-top: 12%;
+    margin-left: 20px;
+    margin-right: 35px;
     font-size: 30px;
 }
 
@@ -198,8 +212,8 @@ main {
 
 .real-content p {
     margin-top: 20px;
-    margin-right: 50px;
     line-height: 24px;
+    margin-right: 15px;
 }
 
 .real-footer {
@@ -222,13 +236,15 @@ main {
     position: absolute;
     font-size: 4em;
     color: #ffffff;
-    right: 8%;
+    right: -9%;
     top: -30%;
+    width: 200px;
     text-align: center;
 }
 
 #totalScore {
-    text-align: center;
+    width: 100%;
+    left: 0;
 }
 
 /* Preloader */
@@ -254,11 +270,6 @@ body.preloader-site {
 
 .hidden-y-overflow {
     overflow-y: hidden;
-}
-
-.footer-sereal.absolute {
-    position: absolute;
-    bottom: 0;
 }
 
 .intro {
