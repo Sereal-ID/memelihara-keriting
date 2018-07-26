@@ -496,6 +496,12 @@ function Game() {
             this.explosionCanvas.addEventListener('click', function(event) {
                 let mousePos = getMousePos(this, event)
 
+                var animationEvent = 'webkitAnimationEnd oanimationend msAnimationEnd animationend';
+                $("#tail").addClass('on');
+                $("#tail").one(animationEvent, function(e) {
+                    $(this).removeClass('on')
+                });
+
                 game.monsterSpawner.monsterPool.pool.forEach(monster => {
                     if (monster.checkIfMouseInsideMonster(mousePos.x, mousePos.y) && monster.alive) {
                         monster.isClicked = true
@@ -517,17 +523,17 @@ function Game() {
 
     this.gameOver = function() {
         document.getElementById("myModal").style.display = 'block';
-        document.getElementById("scoreContainer").style.display = 'none';
         document.getElementById("totalScore").innerHTML = document.getElementById('score').innerHTML
         $("#personCanvas").animate({top: "70%"}, 1000)
+        destroyCursorUI()
 
         this.monsterCtx.clearRect(0, 0, this.monsterCanvas.width, this.monsterCanvas.height)
     }
 
     this.restart = function() {
         document.getElementById("myModal").style.display = 'none';
-        document.getElementById("scoreContainer").style.display = 'block';
         $("#personCanvas").animate({top: "0"}, 1000)
+        initCursorUI()
 
         this.personCtx.clearRect(0, 0, this.personCanvas.width, this.personCanvas.height)
 
@@ -579,6 +585,18 @@ function updateUI() {
     document.getElementById("score").innerHTML = game.playerScore
 }
 
+function initCursorUI() {
+    $('#tail').removeClass('tail-invisible')
+    $('#explosionCanvas').addClass('invisible-cursor')
+    $('#scoreContainer').show()
+}
+
+function destroyCursorUI() {
+    $('#tail').addClass('tail-invisible')
+    $('#explosionCanvas').removeClass('invisible-cursor')
+    $('#scoreContainer').hide()
+}
+
 const collisionToleranceVal = 50
 
 function collisionCheck() {
@@ -618,10 +636,19 @@ function init() {
 
     if (game.init()) {
         let button = document.getElementsByClassName("button-start-game")[0]
+
+        $(document).bind('mousemove', function(e){
+            $('#tail').css({
+                left:  e.pageX + 20,
+                top:   e.pageY
+            })
+        })
         
         button.addEventListener('click', function(event) {
             this.style.display = "none";
             document.getElementById("scoreContainer").style.display = 'block';
+
+            initCursorUI()
 
             game.start()
         })

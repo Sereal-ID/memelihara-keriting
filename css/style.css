@@ -288,6 +288,31 @@ body.preloader-site {
     display: none;
 }
 
-.sword-cursor {
-    cursor: url(../img/pointer1.png), auto;
+#tail {
+    position: absolute;
+    float: left;
+    width: 51px;
+    height: 52px;
+    background: url('../img/pointer_sprite-01.png') left center;
+    z-index: 9;
+}
+
+#tail.on {
+    animation: play 0.15s steps(3);
+    -webkit-animation: play 0.15s steps(3);
+    -moz-animation: play 0.15s steps(3);
+    -ms-animation: play 0.15s steps(3);
+    -o-animation: play 0.15s steps(3);
+}
+
+.tail-invisible {
+    visibility: hidden;
+}
+
+.invisible-cursor {
+    cursor: none;
+}
+
+@keyframes play {
+    100% { background-position: -153px; }
 }
