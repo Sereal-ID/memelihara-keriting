@@ -1,7 +1,7 @@
 var preloaderCanvas = document.getElementById("preloaderCanvas")
 
-preloaderCanvas.width = innerWidth
-preloaderCanvas.height = innerHeight
+preloaderCanvas.width = document.documentElement.clientWidth
+preloaderCanvas.height = document.documentElement.clientHeight
 
 var preloaderCtx = preloaderCanvas.getContext('2d')
 
@@ -12,8 +12,8 @@ var numCols = 3
 var columnWidth = 839 / numCols
 var columnHeight = 169
 
-var posX = (preloaderCanvas.width - columnWidth) / 2;
-var posY = (preloaderCanvas.height - columnHeight) / 2;
+var posX = (preloaderCanvas.width - columnWidth) / 2
+var posY = (preloaderCanvas.height - columnHeight) / 2
 
 var currentIndex = 0
 
@@ -22,7 +22,7 @@ var srcX = 0, srcY = 0
 var myReq
 
 function updatePreloaderImage() {
-    myReq = setInterval(updatePreloaderImage, 800)
+    myReq = setTimeout(updatePreloaderImage, 800)
     preloaderCtx.clearRect(posX, posY, columnWidth, columnHeight)
     currentIndex = (currentIndex + 1) % numCols
     srcX = currentIndex * columnWidth
@@ -38,18 +38,18 @@ $(document).ready(function() {
 })
 
 window.addEventListener('load', function(e) {
-
-    setInterval(function() {
+    
+    setTimeout(function() {
         $('#preloaderCanvas').fadeOut()
         clearInterval(myReq)
 
-        setInterval(function() {
+        setTimeout(function() {
             $('.intro').animate({opacity: '1'}, 800)
             
-            setInterval(function() {
+            setTimeout(function() {
                 $('.intro').animate({opacity: '0'}, 1000)
     
-                setInterval(function() {
+                setTimeout(function() {
                     $('.preloader-wrapper').fadeOut()
                     $('body').removeClass('preloader-site')
                 }, 2000)
