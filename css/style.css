@@ -190,7 +190,7 @@ main {
 .dialog-content {
     margin: 5% auto; /* 15% from the top and centered */
     padding: 20px;
-    width: 50%; /* Could be more or less, depending on screen size */
+    width: 680px; /* Could be more or less, depending on screen size */
     background-image: url("../img/popup_kalah_kosong.png");
     background-size: contain;
     background-repeat: no-repeat;
